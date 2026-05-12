@@ -398,6 +398,94 @@ a {
   padding-bottom: 28px;
 }
 
+.category-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 16px;
+  margin-bottom: 22px;
+}
+
+.career-page .category-filter-bar {
+  margin-bottom: 20px;
+}
+
+.category-filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.category-filter-chip {
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--text);
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 7px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.category-filter-chip:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.category-filter-chip--active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.category-filter-chip--active:hover {
+  background: #054a5a;
+  border-color: #054a5a;
+  color: #fff;
+}
+
+.category-filter-clear {
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--accent);
+  background: none;
+  border: none;
+  padding: 6px 4px;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.category-filter-clear:hover {
+  color: #043844;
+}
+
+.category-filter-empty {
+  margin: 0.25rem 0 0;
+  color: var(--muted);
+  font-size: 0.94rem;
+}
+
+.portfolio-card-category-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  max-width: 100%;
+}
+
+.portfolio-card-category-chip {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #3d565d;
+  padding: 3px 9px;
+  border-radius: 6px;
+  background: var(--accent-soft-2);
+  border: 1px solid rgba(6, 84, 101, 0.12);
+  line-height: 1.35;
+}
+
 .portfolio-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

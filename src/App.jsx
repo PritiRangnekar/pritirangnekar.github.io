@@ -1,4 +1,74 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
+
+/** When selected, every item passes the category filter (default state). */
+const FILTER_ALL_ID = "all";
+
+const CAREER_FILTER_OPTIONS = [
+  { id: "llms", label: "LLMs" },
+  { id: "product", label: "Product" },
+  { id: "policy", label: "Policy" },
+  { id: "software-engineering", label: "Software Engineering" },
+];
+
+const PROJECT_FILTER_OPTIONS = [
+  { id: "llms", label: "LLMs" },
+  { id: "product", label: "Product" },
+  { id: "tech-policy-ethics", label: "Tech Policy and Ethics" },
+  { id: "strategy-research", label: "Strategy Research" },
+];
+
+const PROJECT_CATEGORY_LABEL = Object.fromEntries(PROJECT_FILTER_OPTIONS.map((o) => [o.id, o.label]));
+
+const CAREER_FILTER_BAR_OPTIONS = [{ id: FILTER_ALL_ID, label: "All" }, ...CAREER_FILTER_OPTIONS];
+const PROJECT_FILTER_BAR_OPTIONS = [{ id: FILTER_ALL_ID, label: "All" }, ...PROJECT_FILTER_OPTIONS];
+
+/** OR filter: "All" or empty selection = show everything; otherwise item matches if it has any selected category. Items with no categories only show when "All" is on. */
+function matchesCategoryFilter(selectedIds, itemCategoryIds) {
+  if (selectedIds.size === 0 || selectedIds.has(FILTER_ALL_ID)) return true;
+  const cats = itemCategoryIds ?? [];
+  if (cats.length === 0) return false;
+  return cats.some((id) => selectedIds.has(id));
+}
+
+function toggleFilterSelectionWithAll(prev, id) {
+  if (id === FILTER_ALL_ID) return new Set([FILTER_ALL_ID]);
+  const next = new Set(prev);
+  next.delete(FILTER_ALL_ID);
+  if (next.has(id)) next.delete(id);
+  else next.add(id);
+  if (next.size === 0) return new Set([FILTER_ALL_ID]);
+  return next;
+}
+
+function CategoryFilterBar({ options, selectedIds, onToggle, onClear, groupLabel }) {
+  return (
+    <div className="category-filter-bar" role="group" aria-label={groupLabel}>
+      <div className="category-filter-chips">
+        {options.map(({ id, label }) => (
+          <button
+            key={id}
+            type="button"
+            className={`category-filter-chip${selectedIds.has(id) ? " category-filter-chip--active" : ""}`}
+            aria-pressed={selectedIds.has(id)}
+            onClick={() => onToggle(id)}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+      {selectedIds.has(FILTER_ALL_ID) && selectedIds.size === 1 ? null : (
+        <button type="button" className="category-filter-clear" onClick={onClear}>
+          Clear filters
+        </button>
+      )}
+    </div>
+  );
+}
+
+function CareerFilteredBlock({ selectedIds, categories, children }) {
+  if (!matchesCategoryFilter(selectedIds, categories)) return null;
+  return children;
+}
 
 function HomePage() {
   return (
@@ -123,12 +193,39 @@ function HomePage() {
 }
 
 function CareerPage() {
-  return (
-    <main className="page">
-      <section className="section-card">
-        <h2 className="section-title career">Career</h2>
+  const [selectedCareerFilters, setSelectedCareerFilters] = useState(() => new Set([FILTER_ALL_ID]));
+  const toggleCareerFilter = (id) => {
+    setSelectedCareerFilters((prev) => toggleFilterSelectionWithAll(prev, id));
+  };
+  const sel = selectedCareerFilters;
+  const m = (cats) => matchesCategoryFilter(sel, cats);
+  const showCareerSection =
+    m(["llms", "product"]) ||
+    m(["llms", "product", "policy"]) ||
+    m(["software-engineering"]) ||
+    m(["llms", "product", "software-engineering"]) ||
+    m(["product", "software-engineering"]);
+  const showEducationSection =
+    m(["product", "software-engineering"]) || m(["product", "policy"]) || m([]);
 
-        <div className="role-card">
+  return (
+    <main className="page career-page">
+      <CategoryFilterBar
+        options={CAREER_FILTER_BAR_OPTIONS}
+        selectedIds={selectedCareerFilters}
+        onToggle={toggleCareerFilter}
+        onClear={() => setSelectedCareerFilters(new Set([FILTER_ALL_ID]))}
+        groupLabel="Filter career and education by category"
+      />
+      {!showCareerSection && !showEducationSection ? (
+        <p className="category-filter-empty">No entries match these filters.</p>
+      ) : null}
+      {showCareerSection ? (
+        <section className="section-card">
+          <h2 className="section-title career">Career</h2>
+
+          <CareerFilteredBlock selectedIds={selectedCareerFilters} categories={["llms", "product"]}>
+            <div className="role-card">
           <div className="role-header">
             <img
               className="brand-logo"
@@ -157,8 +254,10 @@ function CareerPage() {
               Product.
             </li>
           </ul>
-        </div>
-        <div className="role-card">
+            </div>
+          </CareerFilteredBlock>
+          <CareerFilteredBlock selectedIds={selectedCareerFilters} categories={["llms", "product", "policy"]}>
+            <div className="role-card">
           <div className="role-header">
             <img
               className="brand-logo"
@@ -192,8 +291,10 @@ function CareerPage() {
               enabling risk assessment across generative AI deployments.
             </li>
           </ul>
-        </div>
-        <div className="role-card">
+            </div>
+          </CareerFilteredBlock>
+          <CareerFilteredBlock selectedIds={selectedCareerFilters} categories={["software-engineering"]}>
+            <div className="role-card">
           <div className="role-header">
             <img
               className="brand-logo"
@@ -222,8 +323,10 @@ function CareerPage() {
               Received a full-time return offer.
             </li>
           </ul>
-        </div>
-        <div className="role-card">
+            </div>
+          </CareerFilteredBlock>
+          <CareerFilteredBlock selectedIds={selectedCareerFilters} categories={["llms", "product", "software-engineering"]}>
+            <div className="role-card">
           <div className="role-header">
             <img
               className="brand-logo"
@@ -252,8 +355,10 @@ function CareerPage() {
               Received return offer.
             </li>
           </ul>
-        </div>
-        <div className="role-card">
+            </div>
+          </CareerFilteredBlock>
+          <CareerFilteredBlock selectedIds={selectedCareerFilters} categories={["product", "software-engineering"]}>
+            <div className="role-card">
           <div className="role-header">
             <img
               className="brand-logo"
@@ -283,13 +388,16 @@ function CareerPage() {
               automation.
             </li>
           </ul>
-        </div>
-      </section>
+            </div>
+          </CareerFilteredBlock>
+        </section>
+      ) : null}
+      {showEducationSection ? (
+        <section className="section-card">
+          <h2 className="section-title education">Education</h2>
 
-      <section className="section-card">
-        <h2 className="section-title education">Education</h2>
-
-        <div className="edu-card">
+          <CareerFilteredBlock selectedIds={selectedCareerFilters} categories={["product", "software-engineering"]}>
+            <div className="edu-card">
           <div className="edu-header">
             <img
               className="brand-logo"
@@ -387,7 +495,9 @@ function CareerPage() {
           </div>
         </div>
 
-        <div className="edu-card">
+          </CareerFilteredBlock>
+          <CareerFilteredBlock selectedIds={selectedCareerFilters} categories={["product", "policy"]}>
+            <div className="edu-card">
           <div className="edu-header">
             <img
               className="brand-logo"
@@ -447,7 +557,9 @@ function CareerPage() {
           </div>
         </div>
 
-        <div className="edu-card">
+          </CareerFilteredBlock>
+          <CareerFilteredBlock selectedIds={selectedCareerFilters} categories={[]}>
+            <div className="edu-card">
           <div className="edu-header">
             <img
               className="brand-logo"
@@ -467,7 +579,9 @@ function CareerPage() {
             </div>
           </div>
         </div>
-      </section>
+          </CareerFilteredBlock>
+        </section>
+      ) : null}
     </main>
   );
 }
@@ -838,6 +952,7 @@ const PORTFOLIO_PROJECTS = [
     dateLabel: "April 2022",
     showModalHero: false,
     detail: LAW_LAW_LAND_DETAIL,
+    categories: ["llms", "product", "tech-policy-ethics"],
   },
   {
     id: "mitigating-discord-harassment",
@@ -848,6 +963,7 @@ const PORTFOLIO_PROJECTS = [
     dateLabel: "June 2023",
     showModalHero: false,
     detail: MITIGATING_DISCORD_DETAIL,
+    categories: ["llms", "product", "tech-policy-ethics"],
   },
   {
     id: "keepup",
@@ -858,6 +974,7 @@ const PORTFOLIO_PROJECTS = [
     dateLabel: "June 2024",
     showModalHero: false,
     detail: KEEPUP_DETAIL,
+    categories: ["llms", "product"],
   },
   {
     id: "explainai",
@@ -868,6 +985,7 @@ const PORTFOLIO_PROJECTS = [
     dateLabel: "September 2024",
     showModalHero: false,
     detail: EXPLAINAI_DETAIL,
+    categories: ["llms", "product"],
   },
   {
     id: "ethics-elections-llm",
@@ -877,6 +995,7 @@ const PORTFOLIO_PROJECTS = [
     dateLabel: "June 2025",
     showModalHero: false,
     detail: ELECTIONS_ETHICS_DETAIL,
+    categories: ["llms", "product", "tech-policy-ethics"],
   },
   {
     id: "charity-abroad-community-at-home",
@@ -886,6 +1005,7 @@ const PORTFOLIO_PROJECTS = [
     image: "/portfolio/charity-abroad-select-chef.png",
     dateLabel: "March 2022",
     href: "https://pritirangnekar.substack.com/p/charity-abroad-community-at-home",
+    categories: ["strategy-research"],
   },
   {
     id: "tale-two-cities-remembrance",
@@ -893,6 +1013,7 @@ const PORTFOLIO_PROJECTS = [
     image: "/portfolio/tale-two-cities-berlin.png",
     dateLabel: "June 2022",
     href: "https://pritirangnekar.substack.com/p/a-tale-of-two-cities-remembrance",
+    categories: ["strategy-research"],
   },
   {
     id: "citizen-science-river-thames",
@@ -900,6 +1021,7 @@ const PORTFOLIO_PROJECTS = [
     image: "/portfolio/citizen-science-thames.png",
     dateLabel: "December 2023",
     href: "https://pritirangnekar.substack.com/p/citizen-science-for-the-river-thames",
+    categories: ["strategy-research"],
   },
 ];
 
@@ -1190,11 +1312,21 @@ function PortfolioDetailModal({ project, onClose }) {
 }
 
 function PortfolioCardTitle({ project }) {
+  const catIds = project.categories ?? [];
   return (
     <div className="portfolio-card-title-row">
       <h2 className="portfolio-card-title">{project.title}</h2>
       {project.dateLabel ? (
         <span className="portfolio-card-date-label">{project.dateLabel}</span>
+      ) : null}
+      {catIds.length > 0 ? (
+        <div className="portfolio-card-category-chips" aria-label="Categories">
+          {catIds.map((cid) => (
+            <span key={cid} className="portfolio-card-category-chip">
+              {PROJECT_CATEGORY_LABEL[cid] ?? cid}
+            </span>
+          ))}
+        </div>
       ) : null}
     </div>
   );
@@ -1223,6 +1355,21 @@ function PortfolioCardDescription({ project }) {
 
 function PortfolioPage() {
   const [openProject, setOpenProject] = useState(null);
+  const [selectedProjectFilters, setSelectedProjectFilters] = useState(() => new Set([FILTER_ALL_ID]));
+
+  const toggleProjectFilter = (id) => {
+    setSelectedProjectFilters((prev) => toggleFilterSelectionWithAll(prev, id));
+  };
+
+  const visibleProjects = useMemo(
+    () => PORTFOLIO_PROJECTS.filter((p) => matchesCategoryFilter(selectedProjectFilters, p.categories)),
+    [selectedProjectFilters],
+  );
+
+  useEffect(() => {
+    if (!openProject) return;
+    if (!visibleProjects.some((p) => p.id === openProject.id)) setOpenProject(null);
+  }, [visibleProjects, openProject]);
 
   useEffect(() => {
     if (!openProject) return undefined;
@@ -1241,8 +1388,18 @@ function PortfolioPage() {
   return (
     <main className="page portfolio-page">
       <section className="portfolio-section" aria-label="Projects">
+        <CategoryFilterBar
+          options={PROJECT_FILTER_BAR_OPTIONS}
+          selectedIds={selectedProjectFilters}
+          onToggle={toggleProjectFilter}
+          onClear={() => setSelectedProjectFilters(new Set([FILTER_ALL_ID]))}
+          groupLabel="Filter projects by category"
+        />
+        {visibleProjects.length === 0 ? (
+          <p className="category-filter-empty">No projects match these filters.</p>
+        ) : (
         <div className="portfolio-grid">
-          {PORTFOLIO_PROJECTS.map((project) =>
+          {visibleProjects.map((project) =>
             project.detail ? (
               <article
                 key={project.id}
@@ -1303,11 +1460,12 @@ function PortfolioPage() {
             ),
           )}
         </div>
-
-        {openProject ? (
-          <PortfolioDetailModal project={openProject} onClose={() => setOpenProject(null)} />
-        ) : null}
+        )}
       </section>
+
+      {openProject ? (
+        <PortfolioDetailModal project={openProject} onClose={() => setOpenProject(null)} />
+      ) : null}
     </main>
   );
 }
