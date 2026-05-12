@@ -307,7 +307,7 @@ function CareerPage() {
                 <p className="edu-dates">2024 - 2026</p>
               </div>
               <details className="coursework-dropdown">
-            <summary>See coursework</summary>
+            <summary>View coursework</summary>
 
             <p className="coursework-group-title">Product and Strategy</p>
             <ul>
@@ -361,7 +361,7 @@ function CareerPage() {
               </div>
               <p className="edu-meta">GPA: 4.1/4.0</p>
               <details className="coursework-dropdown">
-            <summary>See coursework</summary>
+            <summary>View coursework</summary>
             <ul>
               <li>CS 194W Software Project (Writing in the Major)</li>
               <li>CS 224N Natural Language Processing with Deep Learning</li>
@@ -408,6 +408,41 @@ function CareerPage() {
                 Tutorial in Social Dynamics of the Internet through Stanford&apos;s Bing Overseas Studies
                 Program.
               </p>
+              <details className="coursework-dropdown">
+                <summary>View essay prompts</summary>
+                <ul>
+                  <li>
+                    Is the internet becoming more open or more closed? Who benefits most and who benefits the
+                    least from this trend? Why?
+                  </li>
+                  <li>
+                    How have technology and economic growth intersected in the web 2.0 and AI revolution?
+                  </li>
+                  <li>
+                    How important has the role of the state
+                    been in influencing technological revolutions and long-run innovation-led economic growth,
+                    particularly during Perez&apos;s fifth industrial revolution? Considering the evolving
+                    dynamics of the digital era and looking ahead, what role should the state assume?
+                  </li>
+                  <li>
+                    Is Silicon Valley a regional model for innovation-led growth that other regions/states
+                    around the world should try to replicate?
+                  </li>
+                  <li>
+                    How should states respond to the challenges to their
+                    power and control from digital platforms?
+                  </li>
+                  <li>
+                    In the context of
+                    the digital revolution, what should be the scope of the role of the state in addressing
+                    emergent digital inequalities?
+                  </li>
+                  <li>
+                    What is the impact of the growing platformization of the economy on economic actors,
+                    notably at the world&apos;s margins? How might the state respond?
+                  </li>
+                </ul>
+              </details>
             </div>
           </div>
         </div>
