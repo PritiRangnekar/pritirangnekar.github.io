@@ -462,7 +462,7 @@ function CareerPage() {
                   <h3 className="edu-degree">High School Diploma with High Honors</h3>
                   <p className="edu-school">BASIS Independent Silicon Valley</p>
                 </div>
-                <p className="edu-dates">2014 - 2020</p>
+                <p className="edu-dates">2020</p>
               </div>
             </div>
           </div>
@@ -872,11 +872,34 @@ const PORTFOLIO_PROJECTS = [
   {
     id: "ethics-elections-llm",
     title: "Ethics for Elections: Assessing and Improving LLM Performance on the Anthropic Elections Questions Dataset",
-    description: "CS281 Ethics of Artificial Intelligence",
+    description: "Stanford CS281 Ethics of Artificial Intelligence",
     image: "/portfolio/elections-dataset-hf.png",
     dateLabel: "June 2025",
     showModalHero: false,
     detail: ELECTIONS_ETHICS_DETAIL,
+  },
+  {
+    id: "charity-abroad-community-at-home",
+    title: "Charity Abroad, Community at Home",
+    description: "The Lunsford Award for Oral Presentation of Research, Nominee",
+    awardIcon: "/portfolio/award-ribbon.png",
+    image: "/portfolio/charity-abroad-select-chef.png",
+    dateLabel: "March 2022",
+    href: "https://pritirangnekar.substack.com/p/charity-abroad-community-at-home",
+  },
+  {
+    id: "tale-two-cities-remembrance",
+    title: "A Tale of Two Cities: Remembrance in Berlin and Philadelphia",
+    image: "/portfolio/tale-two-cities-berlin.png",
+    dateLabel: "June 2022",
+    href: "https://pritirangnekar.substack.com/p/a-tale-of-two-cities-remembrance",
+  },
+  {
+    id: "citizen-science-river-thames",
+    title: "Citizen Science for the River Thames",
+    image: "/portfolio/citizen-science-thames.png",
+    dateLabel: "December 2023",
+    href: "https://pritirangnekar.substack.com/p/citizen-science-for-the-river-thames",
   },
 ];
 
@@ -1178,6 +1201,8 @@ function PortfolioCardTitle({ project }) {
 }
 
 function PortfolioCardDescription({ project }) {
+  const text = project.description?.trim();
+  if (!text) return null;
   if (project.awardIcon) {
     return (
       <p className="portfolio-card-desc portfolio-card-desc--with-award">
@@ -1189,11 +1214,11 @@ function PortfolioCardDescription({ project }) {
           height={44}
           decoding="async"
         />
-        <span>{project.description}</span>
+        <span>{text}</span>
       </p>
     );
   }
-  return <p className="portfolio-card-desc">{project.description}</p>;
+  return <p className="portfolio-card-desc">{text}</p>;
 }
 
 function PortfolioPage() {
@@ -1251,7 +1276,13 @@ function PortfolioPage() {
               </article>
             ) : (
               <article key={project.id} className="portfolio-card">
-                <a href={project.href} className="portfolio-card-image-wrap" tabIndex={-1}>
+                <a
+                  href={project.href}
+                  className="portfolio-card-image-wrap"
+                  tabIndex={-1}
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   <img
                     className="portfolio-card-image"
                     src={project.image}
@@ -1264,7 +1295,7 @@ function PortfolioPage() {
                 <div className="portfolio-card-body">
                   <PortfolioCardTitle project={project} />
                   <PortfolioCardDescription project={project} />
-                  <a className="portfolio-card-more" href={project.href}>
+                  <a className="portfolio-card-more" href={project.href} target="_blank" rel="noreferrer">
                     Read More &gt;
                   </a>
                 </div>
