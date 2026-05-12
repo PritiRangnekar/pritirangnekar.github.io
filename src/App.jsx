@@ -1291,11 +1291,11 @@ function TopNav({ currentPath }) {
         <a className={`tab ${currentPath === "/career" ? "active" : ""}`} href="#/career">
           Career
         </a>
-        <a className={`tab ${currentPath === "/explorations" ? "active" : ""}`} href="#/explorations">
-          Explorations
-        </a>
         <a className={`tab ${currentPath === "/projects" ? "active" : ""}`} href="#/projects">
           Projects
+        </a>
+        <a className={`tab ${currentPath === "/explorations" ? "active" : ""}`} href="#/explorations">
+          Explorations
         </a>
       </nav>
     </header>
