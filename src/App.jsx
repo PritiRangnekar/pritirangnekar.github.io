@@ -809,6 +809,14 @@ const LAW_LAW_LAND_DETAIL = {
     "Speech-to-Text: Students can respond through speech instead of typing, creating a more immersive and realistic interaction experience",
     "Post-deployment platform improvement: topic modeling (LDA) across student responses to identify concepts and areas where students consistently struggle",
   ],
+  legalEthicalConsiderations: [
+    "FERPA and SOPIPA compliance: minimized data collection (e.g. usernames and emails only) and avoiding sensitive demographic data to reduce discrimination risk",
+    "Inclusivity and Accessibility: speech-to-text support, multiple difficulty levels, and diverse avatars",
+    "Autograding bias: training grading systems on diverse student response datasets, to account for varying levels of English proficiency and dialects such as AAVE",
+    "Protected IP rights: original storyline and internally developed content, with credit given to any legal datasets used",
+    "AI evals: developed in collaboration with lawyers to verify legal accuracy, prevent dangerous scenario generation, and continuously review new content",
+    "Trust and Safety: human moderation for Q&A forum",
+  ],
 };
 
 const MITIGATING_DISCORD_DETAIL = {
@@ -1304,6 +1312,17 @@ function PortfolioDetailModal({ project, onClose }) {
                 ))}
               </ul>
             </section>
+
+            {d.legalEthicalConsiderations?.length ? (
+              <section className="portfolio-modal-section">
+                <h3 className="portfolio-modal-section-heading">Legal and Ethical Considerations</h3>
+                <ul className="portfolio-modal-features">
+                  {d.legalEthicalConsiderations.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </section>
+            ) : null}
           </>
         )}
       </div>
