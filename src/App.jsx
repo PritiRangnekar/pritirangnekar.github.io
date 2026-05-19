@@ -997,6 +997,22 @@ const ELECTIONS_ETHICS_DETAIL = {
     "Future work should move beyond simple refusal rates and examine the quality and content of refusals themselves, including whether models still provide indirect persuasive guidance after refusing a prompt. Another important direction is studying multi-turn interactions, where users may gradually pressure models into changing their stance over time. Finally, because concepts like \"harmful\" political persuasion are inherently subjective, future evaluation frameworks should incorporate perspectives from a broader range of stakeholders, including voters, policymakers, election officials, and impacted communities.",
 };
 
+const BLUEDOT_DETAIL = {
+  variant: "bluedot",
+  technicalAiSafetyBullets: [
+    "Engaged in 30+ hours of readings, writings, and discussions with a facilitator and a multidisciplinary discussion group of 7",
+    "Presented on the limitations and applications of research papers on input data filtration, RLHF, scalable oversight, and mechanistic interpretability",
+    "Drafted briefs comparing the strategy behind and efficacy of evals policies and model cards for Anthropic, OpenAI, Google DeepMind, and Meta",
+    "Researched and led a Socratic discussion on a kill chain scenario involving the use of AI models to orchestrate geopolitical cyberattacks",
+  ],
+  frontierAiGovernanceBullets: [
+    "Prepared 3 tailored briefings on current AI models, including Anthropic's Claude Opus 4.6, for a congressional staffer, a model lab policy lead, and a journalist by adapting tone, framing, and technical depth to each recipient",
+    "Created an educational map of key institutions in AI governance, including industry, academia, third party organizations, and governments",
+    "Presented rebuttals and crafted positioning statements for 2 debates on policy proposals for compute governance and open source models",
+    "Provided feedback on the newly revised, inaugural version of BlueDot Impact's governance course",
+  ],
+};
+
 const PORTFOLIO_PROJECTS = [
   {
     id: "law-law-land",
@@ -1054,6 +1070,17 @@ const PORTFOLIO_PROJECTS = [
     categories: ["llms", "product", "tech-policy-ethics"],
   },
   {
+    id: "bluedot-ai-safety-governance",
+    title: "Technical AI Safety and Frontier AI Governance",
+    description: "Selected for BlueDot Impact (<25% acceptance rate)",
+    awardIcon: "/portfolio/award-ribbon.png",
+    image: "/portfolio/bluedot-impact.png",
+    dateLabel: "February 2026",
+    showModalHero: false,
+    detail: BLUEDOT_DETAIL,
+    categories: ["llms", "tech-policy-ethics"],
+  },
+  {
     id: "charity-abroad-community-at-home",
     title: "Charity Abroad, Community at Home",
     description: "The Lunsford Award for Oral Presentation of Research, Nominee",
@@ -1088,6 +1115,7 @@ function PortfolioDetailModal({ project, onClose }) {
   const isKeepUp = d.variant === "keepup";
   const isExplainAI = d.variant === "explainai";
   const isElectionsEthics = d.variant === "electionsEthics";
+  const isBluedot = d.variant === "bluedot";
 
   const personaRows = d.persona
     ? [
@@ -1136,12 +1164,34 @@ function PortfolioDetailModal({ project, onClose }) {
           </div>
         ) : null}
 
-        <section className="portfolio-modal-section portfolio-modal-section--first">
-          <h3 className="portfolio-modal-section-heading">{d.problemSectionTitle ?? "Problem Statement"}</h3>
-          <p>{d.problemStatement}</p>
-        </section>
+        {!isBluedot ? (
+          <section className="portfolio-modal-section portfolio-modal-section--first">
+            <h3 className="portfolio-modal-section-heading">{d.problemSectionTitle ?? "Problem Statement"}</h3>
+            <p>{d.problemStatement}</p>
+          </section>
+        ) : null}
 
-        {isDiscord ? (
+        {isBluedot ? (
+          <>
+            <section className="portfolio-modal-section portfolio-modal-section--first">
+              <h3 className="portfolio-modal-section-heading">Technical AI Safety</h3>
+              <ul className="portfolio-modal-list portfolio-modal-list--spaced">
+                {d.technicalAiSafetyBullets.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </section>
+
+            <section className="portfolio-modal-section">
+              <h3 className="portfolio-modal-section-heading">Frontier AI Governance</h3>
+              <ul className="portfolio-modal-list portfolio-modal-list--spaced">
+                {d.frontierAiGovernanceBullets.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </section>
+          </>
+        ) : isDiscord ? (
           <>
             <section className="portfolio-modal-section">
               <h3 className="portfolio-modal-section-heading">Policy Approach</h3>
