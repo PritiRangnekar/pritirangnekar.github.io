@@ -293,6 +293,54 @@ function CareerPage() {
           </ul>
             </div>
           </CareerFilteredBlock>
+          <CareerFilteredBlock selectedIds={selectedCareerFilters} categories={["llms", "product", "software-engineering"]}>
+            <div className="role-card">
+          <div className="role-header">
+            <img
+              className="brand-logo"
+              src="/logos/stanford.png"
+              alt=""
+              width={44}
+              height={44}
+            />
+            <div className="role-header-main">
+              <h3 className="role-title">Head Teaching Assistant and Section Leader</h3>
+              <p className="role-company">Stanford CS Department</p>
+            </div>
+            <p className="role-dates">Oct 2022 - Mar 2025</p>
+          </div>
+          <ul className="role-bullets">
+            <li>
+              Led teams of 10 Teaching Assistants for Stanford CS124 (NLP) and CS145 (Big Data Systems),
+              coordinating office hours, managing weekly staffing, exam administration and grading operations, 
+              and curriculum development for courses serving 600+ students.
+            </li>
+            <li>
+              Provided recommendations to course professors on long-term instructional planning and immediate
+              course needs by navigating tradeoffs between student support
+              requests, team bandwidth, academic rigor, accessibility, and fairness.
+            </li>
+            <li>
+              Created and presented interactive coding walkthroughs and collaborative exercises
+              for 60+ CS106A and CS106B students to enhance understanding of lecture material and prepare
+              for independent assignments.
+            </li>
+            <li>
+              Provided live debugging support and technical mentorship during high-volume office hours,
+              helping students resolve implementation and conceptual challenges in real time.
+            </li>
+            <li>
+              Developed, tested, and iteratively refined 6 assignments on fairness, privacy, and explainability with Python and SQL 
+              for the inaugural &ldquo;Data: Tools, Algorithms,
+              Policy, and Society&rdquo; course under the Stanford School of Engineering.
+            </li>
+            <li>
+              Earned average student ratings of 94% across multiple quarters through strong teaching,
+              mentorship, and operational leadership.
+            </li>
+          </ul>
+            </div>
+          </CareerFilteredBlock>
           <CareerFilteredBlock selectedIds={selectedCareerFilters} categories={["software-engineering"]}>
             <div className="role-card">
           <div className="role-header">

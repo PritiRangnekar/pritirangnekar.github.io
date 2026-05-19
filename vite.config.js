@@ -1,6 +1,6 @@
 import { defineConfig } from "vite";
 
-// User site: https://prr.github.io/ (repo prr.github.io) — served at domain root
+// User site: PritiRangnekar/pritirangnekar.github.io → https://pritirangnekar.github.io/
 export default defineConfig({
   base: "/",
 });
